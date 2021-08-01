@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".app.ui.main.MainActivity">
+    <item
+        android:id="@+id/favoriteFragment"
+        android:title="@string/menu_favorite"
+        android:icon="@drawable/ic_favorite"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/imagesFragment"
+        android:title="@string/menu_images"
+        android:icon="@drawable/ic_images"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/priorityFragment"
+        android:title="@string/menu_priority"
+        android:icon="@drawable/ic_priority"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/settingsFragment"
+        android:title="@string/menu_settings"
+        android:icon="@drawable/ic_settings"
+        app:showAsAction="ifRoom" />
+</menu>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/favoriteFragment">
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.github.llmaximll.wonderfulwallpaper.app.ui.favorite.FavoriteFragment"
+        android:label="fragment_favorite"
+        tools:layout="@layout/fragment_favorite" />
+    <fragment
+        android:id="@+id/imagesFragment"
+        android:name="com.github.llmaximll.wonderfulwallpaper.app.ui.images.ImagesFragment"
+        android:label="fragment_images"
+        tools:layout="@layout/fragment_images" />
+    <fragment
+        android:id="@+id/priorityFragment"
+        android:name="com.github.llmaximll.wonderfulwallpaper.app.ui.priority.PriorityFragment"
+        android:label="fragment_priority" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.github.llmaximll.wonderfulwallpaper.app.ui.settings.SettingsFragment"
+        android:label="fragment_settings" />
+</navigation>

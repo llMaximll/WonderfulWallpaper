@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">WonderfulWallpaper</string>
+    // Menu ActivityMain
+    <string name="menu_favorite">Избранное</string>
+    <string name="menu_images">Изображения</string>
+    <string name="menu_priority">Очередь</string>
+    <string name="menu_settings">Настройки</string>
+</resources>
