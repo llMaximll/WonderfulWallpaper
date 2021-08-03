@@ -1,6 +1,5 @@
 package com.github.llmaximll.wonderfulwallpaper.app.data.local
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -12,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface ImageDao {
 
     @Query("SELECT * FROM images")
-    fun getImages(): LiveData<List<Image>>
+    fun getImages(): Flow<List<Image>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(images: List<Image>)

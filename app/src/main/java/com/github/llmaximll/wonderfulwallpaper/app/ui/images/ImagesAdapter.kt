@@ -1,23 +1,22 @@
 package com.github.llmaximll.wonderfulwallpaper.app.ui.images
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.github.llmaximll.wonderfulwallpaper.app.data.entities.Image
 import com.github.llmaximll.wonderfulwallpaper.databinding.ItemImageBinding
 
-class ImagesAdapter() : RecyclerView.Adapter<ImagesViewHolder>() {
+class ImagesAdapter : RecyclerView.Adapter<ImagesViewHolder>() {
 
+    val recentItems = mutableListOf<Image>()
     private val items = mutableListOf<Image>()
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun setItems(items: List<Image>) {
-        this.items.clear()
+    fun addItems(items: List<Image>) {
+        val firstIndex = this.items.lastIndex + 1
         this.items.addAll(items)
-        notifyDataSetChanged()
+        notifyItemRangeInserted(firstIndex, items.size)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagesViewHolder {
@@ -25,7 +24,8 @@ class ImagesAdapter() : RecyclerView.Adapter<ImagesViewHolder>() {
         return ImagesViewHolder((binding))
     }
 
-    override fun onBindViewHolder(holder: ImagesViewHolder, position: Int) = holder.bind(items[position])
+    override fun onBindViewHolder(holder: ImagesViewHolder, position: Int) =
+        holder.bind(items[position])
 
     override fun getItemCount(): Int = items.size
 }
@@ -39,7 +39,8 @@ class ImagesViewHolder(
     fun bind(item: Image) {
         this.image = item
         Glide.with(itemBinding.root)
-            .load(item.webFormatURL)
+            .load(item.webFormatURL.replace("_640", "_340"))
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .centerCrop()
             .into(itemBinding.imageView)
     }
