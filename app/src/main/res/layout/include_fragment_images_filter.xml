@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/cardView">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_dialog_images_filter">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/image_type_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="Тип"
+                android:textSize="25sp"/>
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/imageType_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    app:singleLine="true"
+                    app:singleSelection="true"
+                    android:clipToPadding="false"
+                    app:selectionRequired="true"
+                    app:checkedChip="@id/image_type_all_chip">
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:id="@+id/image_type_all_chip"
+                        android:tag="all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Все" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:id="@+id/image_type_image_chip"
+                        android:tag="photo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Изображение"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:id="@+id/image_type_illustration_chip"
+                        android:tag="illustration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Иллюстрация"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:id="@+id/image_type_vector_chip"
+                        android:tag="vector"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Вектор"/>
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </HorizontalScrollView>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/orientation_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="Ориентация"
+                android:textSize="25sp"/>
+
+            <HorizontalScrollView
+                android:id="@+id/orientation_hScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/orientation_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    app:singleLine="true"
+                    app:singleSelection="true"
+                    app:selectionRequired="true"
+                    android:clipToPadding="false"
+                    app:checkedChip="@id/orientation_all_chip">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/orientation_all_chip"
+                        android:tag="all"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Все"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/orientation_horizontal_chip"
+                        android:tag="horizontal"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Горизонтально"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/orientation_vertical_chip"
+                        android:tag="vertical"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Вертикально"/>
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </HorizontalScrollView>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Категория"
+                android:textSize="25sp"/>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/category_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:clipToPadding="false">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_backgrounds_chip"
+                    android:tag="backgrounds"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Фоны"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_fashion_chip"
+                    android:tag="fashion"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Мода"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_nature_chip"
+                    android:tag="nature"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Природа"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_education_chip"
+                    android:tag="education"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Образование"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_feelings_chip"
+                    android:tag="feelings"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Чувства"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_health_chip"
+                    android:tag="health"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Здоровье"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_people_chip"
+                    android:tag="people"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Люди"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_religion_chip"
+                    android:tag="religion"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Религия"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_places_chip"
+                    android:tag="places"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Места"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_animals_chip"
+                    android:tag="animals"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Животные"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_industry_chip"
+                    android:tag="industry"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Индустрия"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_computer_chip"
+                    android:tag="computer"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Компьютер"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_food_chip"
+                    android:tag="food"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Еда"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_sports_chip"
+                    android:tag="sports"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Спорт"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_transportation_chip"
+                    android:tag="transportation"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Перевозка"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_travel_chip"
+                    android:tag="travel"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Путешествие"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_builds_chip"
+                    android:tag="builds"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Здания"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_business_chip"
+                    android:tag="business"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Бизнес"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_music_chip"
+                    android:tag="music"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Музыка"/>
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Цвета"
+                android:textSize="25sp"/>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/colors_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:clipToPadding="false">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/colors_grayscale_chip"
+                    android:tag="grayscale"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Полутоновый"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/colors_transparent_chip"
+                    android:tag="transparent"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Прозрачный"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/colors_red_chip"
+                    android:tag="red"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Красный"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/colors_orange_chip"
+                    android:tag="orange"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Оранжевый"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/colors_yellow_chip"
+                    android:tag="yellow"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Желтый"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/colors_green_chip"
+                    android:tag="green"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Зеленый"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/colors_turquoise_chip"
+                    android:tag="turquoise"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Бирюзовый"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/colors_blue_chip"
+                    android:tag="blue"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Голубой"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/colors_lilac_chip"
+                    android:tag="lilac"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Сирень"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/colors_pink_chip"
+                    android:tag="pink"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Розовый"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/colors_white_chip"
+                    android:tag="white"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Белый"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/colors_grey_chip"
+                    android:tag="gray"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Серый"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/colors_black_chip"
+                    android:tag="black"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Черный"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/colors_brown_chip"
+                    android:tag="brown"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Коричневый"/>
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Выбор редакции"
+                android:textSize="25sp"/>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/choice_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:clipToPadding="false"
+                app:singleLine="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/choice_yes_chip"
+                    android:tag="yes"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Да"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/choice_no_chip"
+                    android:tag="no"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Нет"/>
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</com.google.android.material.card.MaterialCardView>

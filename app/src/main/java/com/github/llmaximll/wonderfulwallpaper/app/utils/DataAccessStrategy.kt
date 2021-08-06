@@ -23,8 +23,7 @@ fun <T, A> performGetOperation(
         if (response.status == Resource.Status.SUCCESS) {
 //            saveCallResult(response.data!!)
             ((Resource.success((response.data as ImageList).hits)) as Resource<T>)?.let { emit(it) }
-        }/* else if (response.status == Resource.Status.ERROR) {
+        } else if (response.status == Resource.Status.ERROR) {
             emit(Resource.error(response.message!!))
-            emitAll(sourceDB)
-        }*/
+        }
     }

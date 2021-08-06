@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.github.llmaximll.wonderfulwallpaper.app.data.entities.Image
 import com.github.llmaximll.wonderfulwallpaper.databinding.ItemImageBinding
 
@@ -17,6 +16,12 @@ class ImagesAdapter : RecyclerView.Adapter<ImagesViewHolder>() {
         val firstIndex = this.items.lastIndex + 1
         this.items.addAll(items)
         notifyItemRangeInserted(firstIndex, items.size)
+    }
+
+    fun setItems(items: List<Image>) {
+        this.items.clear()
+        this.items.addAll(items)
+        notifyItemRangeChanged(0, this.items.size)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagesViewHolder {
@@ -40,7 +45,6 @@ class ImagesViewHolder(
         this.image = item
         Glide.with(itemBinding.root)
             .load(item.webFormatURL.replace("_640", "_340"))
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .centerCrop()
             .into(itemBinding.imageView)
     }

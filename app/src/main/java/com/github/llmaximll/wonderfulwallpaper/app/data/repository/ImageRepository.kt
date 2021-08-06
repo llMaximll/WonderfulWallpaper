@@ -14,9 +14,28 @@ class ImageRepository @Inject constructor(
     private val localDataSource: ImageDao
 ) {
 
-    fun getImages(key: String, page: Int): Flow<Resource<List<Image>>> = performGetOperation(
+    fun getImages(
+        key: String,
+        page: Int,
+        q: String,
+        imageType: String,
+        orientation: String,
+        category: List<String>,
+        colors: List<String>,
+        editorsChoice: String
+    ): Flow<Resource<List<Image>>> =
+    performGetOperation(
         databaseQuery = { localDataSource.getImages() },
-        networkCall = { remoteDataSource.getImages(key, page = page) },
+        networkCall = { remoteDataSource.getImages(
+            key = key,
+            page = page,
+            q = q,
+            imageType = imageType,
+            orientation = orientation,
+            category = category,
+            colors = colors,
+            editorsChoice = editorsChoice
+        ) },
         saveCallResult = { localDataSource.insertAll(it.hits) }
     )
 }

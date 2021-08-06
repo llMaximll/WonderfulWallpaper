@@ -1,21 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.constraintlayout.motion.widget.MotionLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.ui.images.ImagesFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".app.ui.images.ImagesFragment"
+    app:layoutDescription="@xml/fragment_images_scene"
+    android:id="@+id/motionLayout">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/images_rV"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/search_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:hint="Поиск"
+                android:inputType="textShortMessage"
+                android:imeOptions="actionSearch"
+                android:padding="16dp"
+                android:background="@null"
+                app:layout_collapseMode="pin"/>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/filter_imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:layout_gravity="end"
+                android:background="@drawable/ripple_button"
+                android:src="@drawable/ic_filter_list"
+                android:tooltipText="Фильтр"/>
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:visibility="gone"/>
+        app:showAnimationBehavior="inward"
+        app:hideAnimationBehavior="outward"
+        app:trackCornerRadius="5dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBar"/>
 
-</FrameLayout>
+    <FrameLayout
+        android:id="@+id/include_filter_frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <include android:id="@+id/include_filter"
+            layout="@layout/include_fragment_images_filter" />
+
+    </FrameLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/frontLayer_linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBar">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/images_rV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/clickable_imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:alpha="0"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"/>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.motion.widget.MotionLayout>
