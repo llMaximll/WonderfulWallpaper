@@ -7,13 +7,16 @@
         <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/drawable/background_images_front.xml" value="0.131" />
         <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/drawable/background_tool_bar.xml" value="0.1025" />
         <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/drawable/ic_filter_list.xml" value="0.1025" />
+        <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/drawable/ic_images.xml" value="0.131" />
         <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/drawable/ripple_button.xml" value="0.131" />
-        <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/layout/activity_main.xml" value="0.19230769230769232" />
+        <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/layout/activity_main.xml" value="0.1953125" />
         <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/layout/content_main.xml" value="0.1638888888888889" />
         <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/layout/dialog_images_filter.xml" value="0.19230769230769232" />
         <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/layout/fragment_favorite.xml" value="0.1638888888888889" />
         <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/layout/fragment_first.xml" value="0.1638888888888889" />
-        <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/layout/fragment_images.xml" value="0.1" />
+        <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/layout/fragment_image_detail.xml" value="0.13703703703703704" />
+        <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/layout/fragment_images.xml" value="0.15384615384615385" />
+        <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/layout/fragment_pager_image_detail.xml" value="0.19230769230769232" />
         <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/layout/include_fragment_images_filter.xml" value="0.19230769230769232" />
         <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/layout/item_image.xml" value="0.1953125" />
         <entry key="..\:/Users/llMaximll/StudioProjects/WonderfulWallpaper/app/src/main/res/menu/menu_main.xml" value="0.1638888888888889" />

@@ -22,4 +22,8 @@
         android:id="@+id/settingsFragment"
         android:name="com.github.llmaximll.wonderfulwallpaper.app.ui.settings.SettingsFragment"
         android:label="fragment_settings" />
+    <fragment
+        android:id="@+id/imageDetailFragment"
+        android:name="com.github.llmaximll.wonderfulwallpaper.app.ui.imagedetail.ImageDetailFragment"
+        android:label="fragment_image_detail" />
 </navigation>

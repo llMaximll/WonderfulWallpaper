@@ -3,7 +3,6 @@ package com.github.llmaximll.wonderfulwallpaper.app.di
 import android.content.Context
 import com.github.llmaximll.wonderfulwallpaper.app.data.local.AppDatabase
 import com.github.llmaximll.wonderfulwallpaper.app.data.local.ImageDao
-import com.github.llmaximll.wonderfulwallpaper.app.data.remote.BaseDataSource
 import com.github.llmaximll.wonderfulwallpaper.app.data.remote.ImageRemoteDataSource
 import com.github.llmaximll.wonderfulwallpaper.app.data.remote.ImageService
 import com.github.llmaximll.wonderfulwallpaper.app.data.repository.ImageRepository

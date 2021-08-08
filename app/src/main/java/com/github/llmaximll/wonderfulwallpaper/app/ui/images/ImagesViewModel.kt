@@ -24,6 +24,7 @@ class ImagesViewModel @Inject constructor(
     private val repository: ImageRepository
 ) : ViewModel() {
 
+    // true - показан экран с изображениями, false - фильтры
     private val _mainState = MutableStateFlow(true)
     val mainState = _mainState.asStateFlow()
 

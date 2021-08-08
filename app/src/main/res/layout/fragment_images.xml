@@ -9,6 +9,19 @@
     app:layoutDescription="@xml/fragment_images_scene"
     android:id="@+id/motionLayout">
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:showAnimationBehavior="inward"
+        app:hideAnimationBehavior="outward"
+        app:trackCornerRadius="5dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@id/toolBar"
+        app:layout_constraintTop_toTopOf="@id/toolBar"
+        app:layout_constraintEnd_toEndOf="@id/toolBar"/>
+
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
@@ -50,19 +63,6 @@
 
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        app:showAnimationBehavior="inward"
-        app:hideAnimationBehavior="outward"
-        app:trackCornerRadius="5dp"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolBar"/>
-
     <FrameLayout
         android:id="@+id/include_filter_frameLayout"
         android:layout_width="match_parent"
@@ -90,7 +90,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/images_rV"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/clickable_imageView"
