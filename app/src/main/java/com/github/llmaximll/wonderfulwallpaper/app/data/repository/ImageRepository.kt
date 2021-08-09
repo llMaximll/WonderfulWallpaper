@@ -22,7 +22,8 @@ class ImageRepository @Inject constructor(
         orientation: String,
         category: List<String>,
         colors: List<String>,
-        editorsChoice: String
+        editorsChoice: String,
+        safeSearch: Boolean
     ): Flow<Resource<List<Image>>> =
     performGetOperation(
         databaseQuery = { localDataSource.getImages() },
@@ -34,7 +35,8 @@ class ImageRepository @Inject constructor(
             orientation = orientation,
             category = category,
             colors = colors,
-            editorsChoice = editorsChoice
+            editorsChoice = editorsChoice,
+            safeSearch = safeSearch
         ) },
         saveCallResult = { localDataSource.insertAll(it.hits) }
     )

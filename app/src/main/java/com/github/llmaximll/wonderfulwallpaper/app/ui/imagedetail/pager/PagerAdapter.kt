@@ -9,7 +9,7 @@ import timber.log.Timber
 class PagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     val recentItems = mutableListOf<Image>()
-    val items = mutableListOf<Image>()
+    private val items = mutableListOf<Image>()
 
     fun addItems(items: List<Image>) {
         Timber.v("adapter | items=${items.size}")
@@ -22,6 +22,7 @@ class PagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun createFragment(position: Int): Fragment {
         val image: String = GsonBuilder().create().toJson(items.getOrNull(position))
+        Timber.v("createFragment($position) | items.size=${items.size}")
         return PagerFragment.newInstance(image)
     }
 }

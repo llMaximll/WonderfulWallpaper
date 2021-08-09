@@ -6,9 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.github.llmaximll.wonderfulwallpaper.app.data.entities.Image
 import com.github.llmaximll.wonderfulwallpaper.app.data.entities.Parameters
@@ -17,23 +15,26 @@ import timber.log.Timber
 
 class ImagesAdapter(
     private val callbacks: ImagesFragment.Callbacks?,
-    private val viewModel: ImagesViewModel,
-    private val context: Context
+    private val viewModel: ImagesViewModel
 ) : RecyclerView.Adapter<ImagesViewHolder>() {
 
     val recentItems = mutableListOf<Image>()
     val items = mutableListOf<Image>()
 
+    fun deleteAllItems() {
+        this.items.clear()
+    }
+
     fun addItems(items: List<Image>) {
-        Timber.v("adapter | items=${items.size}")
         val firstIndex = this.items.lastIndex + 1
         this.items.addAll(items)
+        Timber.v("adapter | items=${this.items.size}")
         notifyItemRangeInserted(firstIndex, items.size)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagesViewHolder {
         val binding = ItemImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ImagesViewHolder(binding, callbacks = callbacks, viewModel = viewModel, context = context)
+        return ImagesViewHolder(binding, callbacks = callbacks, viewModel = viewModel)
     }
 
     override fun onBindViewHolder(holder: ImagesViewHolder, position: Int) =
@@ -45,8 +46,7 @@ class ImagesAdapter(
 class ImagesViewHolder(
     private val itemBinding: ItemImageBinding,
     private val callbacks: ImagesFragment.Callbacks?,
-    private val viewModel: ImagesViewModel,
-    private val context: Context
+    private val viewModel: ImagesViewModel
 ) : RecyclerView.ViewHolder(itemBinding.root), View.OnClickListener {
 
     init {
@@ -61,7 +61,7 @@ class ImagesViewHolder(
             .load(item.webFormatURL.replace("_640", "_340"))
             .thumbnail(Glide.with(itemBinding.root).load(item.previewURL).transform(CenterCrop()))
             .transition(withCrossFade())
-            .transform(MultiTransformation(CenterCrop(), RoundedCorners(10)))
+            .transform(CenterCrop())
             .error(Glide.with(itemBinding.root).load(item.previewURL))
             .into(itemBinding.imageView)
             .clearOnDetach()

@@ -8,13 +8,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
 import com.github.llmaximll.wonderfulwallpaper.R
 import com.github.llmaximll.wonderfulwallpaper.app.data.entities.Parameters
+import com.github.llmaximll.wonderfulwallpaper.app.ui.imagedetail.ImageDetailFragment
 import com.github.llmaximll.wonderfulwallpaper.app.ui.images.ImagesFragment
 import com.github.llmaximll.wonderfulwallpaper.databinding.ActivityMainBinding
 import com.google.gson.GsonBuilder
@@ -24,14 +24,15 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(),
-    ImagesFragment.Callbacks {
+    ImagesFragment.Callbacks,
+    ImageDetailFragment.Callbacks {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
     private val viewModel: MainViewModel by viewModels()
 
-    private lateinit var navController: NavController
+    lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,20 +63,25 @@ class MainActivity : AppCompatActivity(),
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.mainState.collect { state ->
                     if (state) {
-                        binding.motionLayout.transitionToState(R.id.start)
+                        binding.motionLayout.transitionToStart()
                     } else {
-                        binding.motionLayout.transitionToState(R.id.end)
+                        binding.motionLayout.transitionToEnd()
                     }
                 }
             }
         }
     }
 
+    // Callbacks
+
     override fun onItemClicked(parameters: Parameters) {
-        viewModel.toggleMainState(false)
         val gson = GsonBuilder().create().toJson(parameters)
         val args = bundleOf(ImagesFragment.ARG_PARAMETERS to gson)
 
         navController.navigate(R.id.imageDetailFragment, args)
+    }
+
+    override fun onImageDetailFragment(exit: Boolean) {
+        viewModel.toggleMainState(state = exit)
     }
 }

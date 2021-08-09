@@ -18,6 +18,7 @@ interface ImageService {
         @Query("orientation") orientation: String,
         @Query("category") category: List<String>,
         @Query("colors") colors: List<String>,
-        @Query("editors_choice") editorsChoice: String
+        @Query("editors_choice") editorsChoice: String,
+        @Query("safesearch") safeSearch: Boolean
     ): Response<ImageList>
 }

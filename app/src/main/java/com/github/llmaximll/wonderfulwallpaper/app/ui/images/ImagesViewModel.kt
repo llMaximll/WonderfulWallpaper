@@ -24,12 +24,19 @@ class ImagesViewModel @Inject constructor(
     private val repository: ImageRepository
 ) : ViewModel() {
 
+    // Показывает, нужно ли прокрутить список до [currentPosition]. true - нужно, false - нет
+    var transitionToNewPositionFlag = false
+
+    // Показывает можно ли начать новую загрузку страницы, false - можно, true - нет
+    var loadingNewPageFlag = false
+
     // true - показан экран с изображениями, false - фильтры
     private val _mainState = MutableStateFlow(true)
     val mainState = _mainState.asStateFlow()
 
-    private val stateHandle = savedStateHandle
     var adapter: ImagesAdapter? = null
+
+    var currentPosition = -1
 
     var page = 1
     var q = ""
@@ -38,6 +45,7 @@ class ImagesViewModel @Inject constructor(
     val category = mutableListOf<String>()
     val colors = mutableListOf<String>()
     var editorsChoice = ""
+    var safeSearch = true
 
     /**
      * [getImages] добавляет в список элементы
@@ -50,7 +58,8 @@ class ImagesViewModel @Inject constructor(
         orientation: String = this.orientation,
         category: List<String> = this.category,
         colors: List<String> = this.colors,
-        editorsChoice: String = this.editorsChoice
+        editorsChoice: String = this.editorsChoice,
+        safeSearch: Boolean = this.safeSearch
     ): Flow<Resource<List<Image>>> {
         return repository.getImages(
             key = context.getString(R.string.api_key),
@@ -60,7 +69,8 @@ class ImagesViewModel @Inject constructor(
             orientation = orientation,
             category = category,
             colors = colors,
-            editorsChoice = editorsChoice
+            editorsChoice = editorsChoice,
+            safeSearch = safeSearch
         )
     }
 
@@ -143,14 +153,6 @@ class ImagesViewModel @Inject constructor(
             }
         }
         return false
-    }
-
-    fun onSaveState(stateRV: Parcelable?) {
-        stateHandle.set(KEY_SAVE_RECYCLER_VIEW, stateRV)
-    }
-
-    fun onRestoreState(key: String): Parcelable? {
-        return stateHandle.get<Parcelable?>(KEY_SAVE_RECYCLER_VIEW)
     }
 
     companion object {

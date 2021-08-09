@@ -16,7 +16,8 @@ class ImageRemoteDataSource @Inject constructor(
         orientation: String,
         category: List<String>,
         colors: List<String>,
-        editorsChoice: String
+        editorsChoice: String,
+        safeSearch: Boolean
     ): Resource<ImageList> =
     getResult {
         imageService.getImages(
@@ -27,7 +28,8 @@ class ImageRemoteDataSource @Inject constructor(
             orientation = orientation,
             category = category,
             colors = colors,
-            editorsChoice = editorsChoice
+            editorsChoice = editorsChoice,
+            safeSearch = safeSearch
         )
     }
 }

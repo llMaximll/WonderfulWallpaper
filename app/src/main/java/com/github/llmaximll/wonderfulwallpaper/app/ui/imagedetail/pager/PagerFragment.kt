@@ -17,7 +17,6 @@ import com.github.llmaximll.wonderfulwallpaper.app.data.entities.Image
 import com.github.llmaximll.wonderfulwallpaper.databinding.FragmentPagerImageDetailBinding
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
-import timber.log.Timber
 
 class PagerFragment : Fragment() {
 
@@ -32,7 +31,6 @@ class PagerFragment : Fragment() {
         } catch (e: JsonSyntaxException) {
             e.printStackTrace()
         }
-        Timber.v("image=${arguments?.getString(ARG_IMAGE_JSON)}")
     }
 
     override fun onCreateView(
@@ -50,10 +48,10 @@ class PagerFragment : Fragment() {
             .load(image.largeImageURL)
             .thumbnail(
                 Glide.with(binding.root)
-                    .load(image.webFormatURL.replace("_640", "_340"))
+                    .load(image.previewURL)
             )
             .transition(DrawableTransitionOptions.withCrossFade())
-            .error(Glide.with(binding.root).load(image.previewURL))
+            .error(Glide.with(binding.root).load(image.webFormatURL.replace("_640", "_340")))
             .addListener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,

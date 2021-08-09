@@ -21,9 +21,14 @@ class ImageDetailViewModel @Inject constructor(
     private val repository: ImageRepository
 ) : ViewModel() {
 
+    // Показывает можно ли начать новую загрузку страницы, false - можно, true - нет
+    var loadingNewPageFlag = false
+
+    lateinit var imageList: MutableList<Image>
+
     private val stateHandle = savedStateHandle
     var adapter: PagerAdapter? = null
-    var positionImage = -1
+    var currentItem = -1
 
     var page = 1
     var q = ""
@@ -32,6 +37,7 @@ class ImageDetailViewModel @Inject constructor(
     val category = mutableListOf<String>()
     val colors = mutableListOf<String>()
     var editorsChoice = ""
+    var safeSearch = true
 
     /**
      * [getImages] добавляет в список элементы
@@ -44,7 +50,8 @@ class ImageDetailViewModel @Inject constructor(
         orientation: String = this.orientation,
         category: List<String> = this.category,
         colors: List<String> = this.colors,
-        editorsChoice: String = this.editorsChoice
+        editorsChoice: String = this.editorsChoice,
+        safeSearch: Boolean = this.safeSearch
     ): Flow<Resource<List<Image>>> {
         return repository.getImages(
             key = context.getString(R.string.api_key),
@@ -54,7 +61,8 @@ class ImageDetailViewModel @Inject constructor(
             orientation = orientation,
             category = category,
             colors = colors,
-            editorsChoice = editorsChoice
+            editorsChoice = editorsChoice,
+            safeSearch = safeSearch
         )
     }
 
