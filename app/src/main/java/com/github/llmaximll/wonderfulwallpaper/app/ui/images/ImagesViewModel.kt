@@ -24,9 +24,6 @@ class ImagesViewModel @Inject constructor(
     private val repository: ImageRepository
 ) : ViewModel() {
 
-    // Показывает, нужно ли прокрутить список до [currentPosition]. true - нужно, false - нет
-    var transitionToNewPositionFlag = false
-
     // Показывает можно ли начать новую загрузку страницы, false - можно, true - нет
     var loadingNewPageFlag = false
 

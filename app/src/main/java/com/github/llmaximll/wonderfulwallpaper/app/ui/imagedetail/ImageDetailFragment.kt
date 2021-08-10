@@ -1,38 +1,25 @@
 package com.github.llmaximll.wonderfulwallpaper.app.ui.imagedetail
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
 import com.github.llmaximll.wonderfulwallpaper.app.data.entities.Image
-import com.github.llmaximll.wonderfulwallpaper.app.data.entities.Parameters
-import com.github.llmaximll.wonderfulwallpaper.app.ui.imagedetail.pager.PagerAdapter
 import com.github.llmaximll.wonderfulwallpaper.app.ui.images.ImagesFragment
 import com.github.llmaximll.wonderfulwallpaper.app.ui.main.MainActivity
-import com.github.llmaximll.wonderfulwallpaper.app.utils.Resource
 import com.github.llmaximll.wonderfulwallpaper.databinding.FragmentImageDetailBinding
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 @AndroidEntryPoint
 class ImageDetailFragment : Fragment() {
@@ -43,9 +30,8 @@ class ImageDetailFragment : Fragment() {
 
     private var _binding: FragmentImageDetailBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: ImageDetailViewModel by viewModels()
-    private lateinit var collector: FlowCollector<Resource<List<Image>>>
     private var callbacks: Callbacks? = null
+    private var image: Image? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -54,23 +40,12 @@ class ImageDetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        callbacks?.onImageDetailFragment(false)
         try {
-            val parameters = Gson().fromJson(arguments?.getString(ImagesFragment.ARG_PARAMETERS), Parameters::class.java)
-            viewModel.run {
-                page = parameters.page
-                q = parameters.q
-                imageType = parameters.imageType
-                orientation = parameters.orientation
-                category.addAll(parameters.category)
-                colors.addAll(parameters.colors)
-                editorsChoice = parameters.editorsChoice
-            }
-            viewModel.currentItem = parameters.positionImage
-            parameters.items?.let { viewModel.imageList = it.toMutableList() }
+            image = Gson().fromJson(arguments?.getString(ImagesFragment.ARG_IMAGE), Image::class.java)
         } catch (e: JsonSyntaxException) {
             e.printStackTrace()
         }
-        callbacks?.onImageDetailFragment(false)
     }
 
     override fun onCreateView(
@@ -86,31 +61,7 @@ class ImageDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupBackButton()
-        setupObservers()
-        setupViewPager()
-    }
-
-    private fun setupViewPager() {
-        viewModel.adapter = PagerAdapter(this)
-        viewModel.adapter?.addItems(viewModel.imageList)
-        binding.pager.adapter = viewModel.adapter
-        binding.pager.setCurrentItem(viewModel.currentItem, false)
-        binding.pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageScrollStateChanged(state: Int) {
-                super.onPageScrollStateChanged(state)
-
-                if (!viewModel.loadingNewPageFlag &&
-                    !binding.pager.canScrollHorizontally(RecyclerView.HORIZONTAL) &&
-                    state == RecyclerView.SCROLL_STATE_IDLE) {
-                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                        viewModel.loadingNewPageFlag = true // Флаг, запрещающий подгружать новые страницы
-                        viewModel.page++
-                        collector.emitAll(viewModel.getImages(requireContext()))
-                    }
-                }
-            }
-        })
-        Timber.v("currentItem=${binding.pager.currentItem}")
+        setImageToImageView()
     }
 
     private fun setupBackButton() {
@@ -125,74 +76,47 @@ class ImageDetailFragment : Fragment() {
         })
     }
 
-    private fun setupObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                collector = object : FlowCollector<Resource<List<Image>>> {
-                    override suspend fun emit(value: Resource<List<Image>>) {
-                        when (value.status) {
-                            Resource.Status.LOADING -> {
-                                Timber.v("loading")
-                            }
-                            Resource.Status.SUCCESS -> {
-                                withContext(Dispatchers.Main) {
-                                    if (
-                                        !value.data.isNullOrEmpty() &&
-                                        value.data[1].id != viewModel.adapter?.recentItems?.getOrNull(1)?.id
-                                    ) {
-                                        viewModel.adapter?.apply {
-                                            addItems(value.data)
-                                            recentItems.clear()
-                                            recentItems.addAll(value.data)
-                                            viewModel.imageList.addAll(value.data)
-                                            viewModel.loadingNewPageFlag = false // Разрешение для погрузки новой страницы
-                                            Timber.v("Элементы добавлены")
-                                        }
-                                    }
-                                }
-                                Timber.v("success | ${value.data?.size}")
-                            }
-                            Resource.Status.ERROR -> {
-                                withContext(Dispatchers.Main) {
-                                    viewModel.loadingNewPageFlag = false // Разрешение для погрузки новой страницы
-                                    Toast.makeText(requireContext(), "${value.message}", Toast.LENGTH_LONG).show()
-                                }
-                                Timber.v("Ошибка загрузки данных | ${value.message}")
-                            }
-                        }
-                    }
+    private fun setImageToImageView() {
+        Glide.with(this)
+            .load(image?.largeImageURL)
+            .thumbnail(
+                Glide.with(binding.root)
+                    .load(image?.previewURL)
+            )
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .error(Glide.with(binding.root).load(image?.webFormatURL?.replace("_640", "_340")))
+            .addListener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: com.bumptech.glide.request.target.Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    binding.progressBar.hide()
+                    return false
                 }
-            }
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        viewModel.currentItem = binding.pager.currentItem
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: com.bumptech.glide.request.target.Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    binding.progressBar.hide()
+                    return false
+                }
+            })
+            .into(binding.imageView)
+            .clearOnDetach()
     }
 
     override fun onDetach() {
         super.onDetach()
-        val gson = GsonBuilder().create()
-        val imageListGson = gson.toJson(viewModel.imageList.toList())
-        setFragmentResult(REQUEST_KEY_RESULT_IMAGE_LIST, bundleOf(
-            KEY_IMAGE_LIST to imageListGson,
-            KEY_CURRENT_POSITION to viewModel.currentItem,
-            KEY_PAGE to viewModel.page
-        ))
         callbacks = null
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        // Result API
-        const val REQUEST_KEY_RESULT_IMAGE_LIST = "request_key_result_image_list"
-        const val KEY_IMAGE_LIST = "key_image_view"
-        const val KEY_CURRENT_POSITION = "key_current_position"
-        const val KEY_PAGE = "key_page"
     }
 }

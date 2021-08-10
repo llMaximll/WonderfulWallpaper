@@ -1,6 +1,5 @@
 package com.github.llmaximll.wonderfulwallpaper.app.ui.images
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
@@ -10,35 +9,31 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.github.llmaximll.wonderfulwallpaper.R
 import com.github.llmaximll.wonderfulwallpaper.app.data.entities.Image
-import com.github.llmaximll.wonderfulwallpaper.app.data.entities.Parameters
-import com.github.llmaximll.wonderfulwallpaper.app.ui.imagedetail.ImageDetailFragment
 import com.github.llmaximll.wonderfulwallpaper.app.utils.Resource
 import com.github.llmaximll.wonderfulwallpaper.databinding.FragmentImagesBinding
 import com.google.android.material.chip.ChipGroup
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @AndroidEntryPoint
 class ImagesFragment : Fragment() {
 
     interface Callbacks {
-        fun onItemClicked(parameters: Parameters)
+        fun onItemClicked(image: Image)
     }
 
     private var _binding: FragmentImagesBinding? = null
@@ -67,7 +62,6 @@ class ImagesFragment : Fragment() {
         setupToolBar()
         setupObservers()
         setupRecyclerView()
-//        setupFragmentResultListener()
     }
 
     override fun onStart() {
@@ -76,7 +70,7 @@ class ImagesFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        if (viewModel.adapter == null) viewModel.adapter = ImagesAdapter(callbacks, viewModel)
+        if (viewModel.adapter == null) viewModel.adapter = ImagesAdapter(callbacks)
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             binding.imagesRV.layoutManager = GridLayoutManager(requireContext(), 2)
         } else {
@@ -89,9 +83,11 @@ class ImagesFragment : Fragment() {
 
                 if (!viewModel.loadingNewPageFlag &&
                     !binding.imagesRV.canScrollVertically(1) &&
-                    newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    newState == RecyclerView.SCROLL_STATE_IDLE
+                ) {
                     viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                        viewModel.loadingNewPageFlag = true // Флаг, запрещающий подгружать новые страницы
+                        viewModel.loadingNewPageFlag =
+                            true // Флаг, запрещающий подгружать новые страницы
                         viewModel.page++
                         collector.emitAll(viewModel.getImages(requireContext()))
                     }
@@ -100,12 +96,11 @@ class ImagesFragment : Fragment() {
         })
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun setupToolBar() {
         binding.progressBar.setVisibilityAfterHide(View.INVISIBLE)
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                viewModel.adapter = ImagesAdapter(callbacks, viewModel)
+                viewModel.adapter = ImagesAdapter(callbacks)
                 binding.imagesRV.adapter = viewModel.adapter
                 viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                     viewModel.q = binding.searchEditText.text.toString().replace(" ", "+")
@@ -117,22 +112,6 @@ class ImagesFragment : Fragment() {
         }
         binding.filterImageView.setOnClickListener {
             viewModel.toggleMainState()
-        }
-    }
-
-    private fun setupFragmentResultListener() {
-        setFragmentResultListener(ImageDetailFragment.REQUEST_KEY_RESULT_IMAGE_LIST) { _, bundle ->
-            val itemType = object : TypeToken<List<Image>>() {}.type
-            val imageList = Gson().fromJson<List<Image>>(bundle.getString(ImageDetailFragment.KEY_IMAGE_LIST), itemType)
-            viewModel.currentPosition = bundle.getInt(ImageDetailFragment.KEY_CURRENT_POSITION)
-            val page = bundle.getInt(ImageDetailFragment.KEY_PAGE)
-            viewModel.transitionToNewPositionFlag = true
-            val newItems = imageList.toMutableList()
-            Timber.v("imageList.size(1)=${newItems.size}")
-            newItems.removeAll(viewModel.adapter?.items!!)
-            Timber.v("imageList.size(2)=${newItems.size}")
-            viewModel.adapter?.addItems(newItems)
-            viewModel.page = page
         }
     }
 
@@ -152,13 +131,16 @@ class ImagesFragment : Fragment() {
                                 Resource.Status.SUCCESS -> {
                                     withContext(Dispatchers.Main) {
                                         if (!value.data.isNullOrEmpty() &&
-                                            value.data[1].id != viewModel.adapter?.recentItems?.getOrNull(1)?.id
+                                            value.data[1].id != viewModel.adapter?.recentItems?.getOrNull(
+                                                1
+                                            )?.id
                                         ) {
                                             viewModel.adapter?.apply {
                                                 addItems(value.data)
                                                 recentItems.clear()
                                                 recentItems.addAll(value.data)
-                                                viewModel.loadingNewPageFlag = false // Разрешение для погрузки новой страницы
+                                                viewModel.loadingNewPageFlag =
+                                                    false // Разрешение для погрузки новой страницы
                                                 Timber.v("Элементы добавлены")
                                             }
                                         }
@@ -169,8 +151,13 @@ class ImagesFragment : Fragment() {
                                 Resource.Status.ERROR -> {
                                     withContext(Dispatchers.Main) {
                                         binding.progressBar.hide()
-                                        viewModel.loadingNewPageFlag = false // Разрешение для погрузки новой страницы
-                                        Toast.makeText(requireContext(), "${value.message}", Toast.LENGTH_LONG).show()
+                                        viewModel.loadingNewPageFlag =
+                                            false // Разрешение для погрузки новой страницы
+                                        Toast.makeText(
+                                            requireContext(),
+                                            "${value.message}",
+                                            Toast.LENGTH_LONG
+                                        ).show()
                                     }
                                     Timber.v("Ошибка загрузки данных | ${value.message}")
                                 }
@@ -183,7 +170,9 @@ class ImagesFragment : Fragment() {
                         if (!state) {
                             binding.motionLayout.transitionToState(R.id.end)
                             binding.clickableImageView.animate().apply {
-                                withStartAction { binding.clickableImageView.visibility = View.VISIBLE }
+                                withStartAction {
+                                    binding.clickableImageView.visibility = View.VISIBLE
+                                }
                                 alpha(0.7f)
                             }
                         } else {
@@ -203,17 +192,19 @@ class ImagesFragment : Fragment() {
                                 )
                             }
                             if (viewModel.checkChangeState(chipGroupList)) {
-                                viewModel.adapter = ImagesAdapter(callbacks, viewModel)
+                                viewModel.adapter = ImagesAdapter(callbacks)
                                 binding.imagesRV.adapter = viewModel.adapter
                                 viewModel.page = 1
                                 viewModel.setParamListFromTags(chipGroupList)
-                                Timber.v("""
+                                Timber.v(
+                                    """
                                 imageType=${viewModel.imageType}
                                 orientation=${viewModel.orientation}
                                 category=${viewModel.category}
                                 colors=${viewModel.colors}
                                 editorsChoice=${viewModel.editorsChoice}
-                                """.trimIndent())
+                                """.trimIndent()
+                                )
                                 collector.emitAll(viewModel.getImages(requireContext()))
                             }
                         }
@@ -230,6 +221,6 @@ class ImagesFragment : Fragment() {
     }
 
     companion object {
-        const val ARG_PARAMETERS = "arg_parameters"
+        const val ARG_IMAGE = "arg_image"
     }
 }

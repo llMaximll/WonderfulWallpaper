@@ -13,7 +13,11 @@
         android:id="@+id/imagesFragment"
         android:name="com.github.llmaximll.wonderfulwallpaper.app.ui.images.ImagesFragment"
         android:label="fragment_images"
-        tools:layout="@layout/fragment_images" />
+        tools:layout="@layout/fragment_images" >
+        <action
+            android:id="@+id/action_imagesFragment_to_imageDetailFragment"
+            app:destination="@id/imageDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/priorityFragment"
         android:name="com.github.llmaximll.wonderfulwallpaper.app.ui.priority.PriorityFragment"

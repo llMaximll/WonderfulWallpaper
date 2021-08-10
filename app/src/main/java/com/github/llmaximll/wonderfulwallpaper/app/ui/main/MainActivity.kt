@@ -8,12 +8,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
 import com.github.llmaximll.wonderfulwallpaper.R
-import com.github.llmaximll.wonderfulwallpaper.app.data.entities.Parameters
+import com.github.llmaximll.wonderfulwallpaper.app.data.entities.Image
 import com.github.llmaximll.wonderfulwallpaper.app.ui.imagedetail.ImageDetailFragment
 import com.github.llmaximll.wonderfulwallpaper.app.ui.images.ImagesFragment
 import com.github.llmaximll.wonderfulwallpaper.databinding.ActivityMainBinding
@@ -32,7 +33,8 @@ class MainActivity : AppCompatActivity(),
 
     private val viewModel: MainViewModel by viewModels()
 
-    lateinit var navController: NavController
+    val navController: NavController
+        get() = (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +43,6 @@ class MainActivity : AppCompatActivity(),
         setContentView(binding.root)
 
         setupObservers()
-
-        navController = (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
 
         appBarConfiguration = AppBarConfiguration(setOf(
             R.id.favoriteFragment,
@@ -74,11 +74,11 @@ class MainActivity : AppCompatActivity(),
 
     // Callbacks
 
-    override fun onItemClicked(parameters: Parameters) {
-        val gson = GsonBuilder().create().toJson(parameters)
-        val args = bundleOf(ImagesFragment.ARG_PARAMETERS to gson)
+    override fun onItemClicked(image: Image) {
+        val gson = GsonBuilder().create().toJson(image)
+        val args = bundleOf(ImagesFragment.ARG_IMAGE to gson)
 
-        navController.navigate(R.id.imageDetailFragment, args)
+        findNavController(R.id.nav_host_fragment).navigate(R.id.action_imagesFragment_to_imageDetailFragment, args)
     }
 
     override fun onImageDetailFragment(exit: Boolean) {

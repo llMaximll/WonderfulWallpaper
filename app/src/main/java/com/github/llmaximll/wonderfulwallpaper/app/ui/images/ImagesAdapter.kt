@@ -1,6 +1,5 @@
 package com.github.llmaximll.wonderfulwallpaper.app.ui.images
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,21 +8,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.github.llmaximll.wonderfulwallpaper.app.data.entities.Image
-import com.github.llmaximll.wonderfulwallpaper.app.data.entities.Parameters
 import com.github.llmaximll.wonderfulwallpaper.databinding.ItemImageBinding
 import timber.log.Timber
 
 class ImagesAdapter(
-    private val callbacks: ImagesFragment.Callbacks?,
-    private val viewModel: ImagesViewModel
+    private val callbacks: ImagesFragment.Callbacks?
 ) : RecyclerView.Adapter<ImagesViewHolder>() {
 
     val recentItems = mutableListOf<Image>()
-    val items = mutableListOf<Image>()
-
-    fun deleteAllItems() {
-        this.items.clear()
-    }
+    private val items = mutableListOf<Image>()
 
     fun addItems(items: List<Image>) {
         val firstIndex = this.items.lastIndex + 1
@@ -34,7 +27,7 @@ class ImagesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagesViewHolder {
         val binding = ItemImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ImagesViewHolder(binding, callbacks = callbacks, viewModel = viewModel)
+        return ImagesViewHolder(binding, callbacks = callbacks)
     }
 
     override fun onBindViewHolder(holder: ImagesViewHolder, position: Int) =
@@ -45,8 +38,7 @@ class ImagesAdapter(
 
 class ImagesViewHolder(
     private val itemBinding: ItemImageBinding,
-    private val callbacks: ImagesFragment.Callbacks?,
-    private val viewModel: ImagesViewModel
+    private val callbacks: ImagesFragment.Callbacks?
 ) : RecyclerView.ViewHolder(itemBinding.root), View.OnClickListener {
 
     init {
@@ -68,18 +60,6 @@ class ImagesViewHolder(
     }
 
     override fun onClick(v: View?) {
-        val parameters = Parameters(
-            idImage = image.id,
-            page = viewModel.page,
-            q = viewModel.q,
-            imageType = viewModel.imageType,
-            orientation = viewModel.orientation,
-            category = viewModel.category,
-            colors = viewModel.colors,
-            editorsChoice = viewModel.editorsChoice,
-            positionImage = adapterPosition,
-            items = viewModel.adapter?.items?.toList()
-        )
-        callbacks?.onItemClicked(parameters)
+        callbacks?.onItemClicked(image)
     }
 }
