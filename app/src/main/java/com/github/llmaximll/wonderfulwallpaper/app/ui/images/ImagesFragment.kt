@@ -152,7 +152,7 @@ class ImagesFragment : Fragment() {
                                     withContext(Dispatchers.Main) {
                                         binding.progressBar.hide()
                                         viewModel.loadingNewPageFlag =
-                                            false // Разрешение для погрузки новой страницы
+                                            false // Разрешение для подгрузки новой страницы
                                         Toast.makeText(
                                             requireContext(),
                                             "${value.message}",

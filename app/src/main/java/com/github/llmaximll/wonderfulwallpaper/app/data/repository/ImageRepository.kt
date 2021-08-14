@@ -2,6 +2,7 @@ package com.github.llmaximll.wonderfulwallpaper.app.data.repository
 
 import androidx.lifecycle.LiveData
 import com.github.llmaximll.wonderfulwallpaper.app.data.entities.Image
+import com.github.llmaximll.wonderfulwallpaper.app.data.entities.ImageFavorite
 import com.github.llmaximll.wonderfulwallpaper.app.data.local.ImageDao
 import com.github.llmaximll.wonderfulwallpaper.app.data.remote.ImageRemoteDataSource
 import com.github.llmaximll.wonderfulwallpaper.app.utils.Resource
@@ -40,4 +41,17 @@ class ImageRepository @Inject constructor(
         ) },
         saveCallResult = { localDataSource.insertAll(it.hits) }
     )
+
+    fun insertFavoriteImage(imageFavorite: ImageFavorite) {
+        localDataSource.insertFavoriteImage(imageFavorite)
+    }
+
+    suspend fun getFavoriteImages(): List<ImageFavorite> =
+        localDataSource.getFavoriteImages()
+
+    suspend fun getFavoriteImage(id: String): ImageFavorite? =
+        localDataSource.getFavoriteImage(id)
+
+    fun deleteFavoriteImages(favoriteImages: List<ImageFavorite>) =
+        localDataSource.deleteFavoriteImages(favoriteImages)
 }

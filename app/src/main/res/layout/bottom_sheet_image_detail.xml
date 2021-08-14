@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheet"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="340dp"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="60dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/download_image_imageButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_file_download"
+            android:background="@drawable/ripple_button" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/set_image_imageButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_image"
+            android:background="@drawable/ripple_button" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/open_in_new_imageButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_open_in_new"
+            android:background="@drawable/ripple_button" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/aspect_imageButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_aspect_ratio"
+            android:background="@drawable/ripple_button" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@android:color/holo_blue_light"
+        android:text="bottom_sheet_content"
+        android:textColor="@android:color/white" />
+</LinearLayout>

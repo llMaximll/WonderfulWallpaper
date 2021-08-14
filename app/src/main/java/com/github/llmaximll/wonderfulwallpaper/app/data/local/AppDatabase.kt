@@ -5,8 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.github.llmaximll.wonderfulwallpaper.app.data.entities.Image
+import com.github.llmaximll.wonderfulwallpaper.app.data.entities.ImageFavorite
 
-@Database(entities = [Image::class], version = 1, exportSchema = false)
+@Database(entities = [Image::class, ImageFavorite::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun imageDao(): ImageDao
