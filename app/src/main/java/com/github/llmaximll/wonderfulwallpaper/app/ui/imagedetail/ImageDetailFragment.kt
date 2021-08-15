@@ -1,11 +1,14 @@
 package com.github.llmaximll.wonderfulwallpaper.app.ui.imagedetail
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -95,6 +98,13 @@ class ImageDetailFragment : Fragment() {
                 wallpaperDialog.show(parentFragmentManager, null)
             }
         }
+        binding.includeBottomSheet.aspectImageButton.setOnClickListener {
+            viewModel.toggleScaleState()
+        }
+        binding.includeBottomSheet.openInNewImageButton.setOnClickListener {
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(image?.pageURL))
+            startActivity(browserIntent)
+        }
     }
 
     private fun setupBackButton() {
@@ -175,6 +185,15 @@ class ImageDetailFragment : Fragment() {
                                 }
                                 binding.favoriteImageButton.setImageResource(R.drawable.ic_favorite)
                             }
+                        }
+                    }
+                }
+                launch {
+                    viewModel.scaleState.collect { state ->
+                        if (state) {
+                            binding.imageView.scaleType = ImageView.ScaleType.CENTER
+                        } else {
+                            binding.imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
                         }
                     }
                 }
