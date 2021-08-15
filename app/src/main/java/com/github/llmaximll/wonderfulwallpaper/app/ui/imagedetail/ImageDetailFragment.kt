@@ -89,6 +89,12 @@ class ImageDetailFragment : Fragment() {
         binding.favoriteImageButton.setOnClickListener {
             viewModel.toggleFavoriteState()
         }
+        binding.includeBottomSheet.setImageImageButton.setOnClickListener {
+            if (image?.largeImageURL != null) {
+                val wallpaperDialog = ChooseDialogFragment.newInstance(image!!.largeImageURL)
+                wallpaperDialog.show(parentFragmentManager, null)
+            }
+        }
     }
 
     private fun setupBackButton() {

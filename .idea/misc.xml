@@ -31,6 +31,7 @@
         <entry key="app/src/main/res/drawable/ic_open_in_new.xml" value="0.1175" />
         <entry key="app/src/main/res/layout/bottom_sheet_image_detail.xml" value="0.1953125" />
         <entry key="app/src/main/res/layout/fragment_image_detail.xml" value="0.17314814814814813" />
+        <entry key="app/src/main/res/layout/simple_dialog.xml" value="0.17314814814814813" />
       </map>
     </option>
   </component>
